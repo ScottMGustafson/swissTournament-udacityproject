@@ -6,15 +6,8 @@
 import psycopg2
 import subprocess
 
-def tableExists(db, tablename):
-        c=db.cursor()
-        c.execute("""select exists
-                        (select * from information_schema.tables 
-                         where table_name=%s);""", (tablename,))
-        return bool(c.fetchone()[0])
-
-
 def executeSql(fname):
+    """execute tournament.sql"""
     with open(fname, 'r') as f:
         sql_file = f.read()
 
@@ -36,15 +29,11 @@ def connect():
 
     try:
         db= psycopg2.connect("dbname=tournament")
-        assert(tableExists(db,'matches') and tableExists(db,'players'))
     except:
         executeSql("tournament.sql")
         db= psycopg2.connect("dbname=tournament")
-        assert(tableExists(db,'matches') and tableExists(db,'players'))
     return db 
         
-
-
 def deleteMatches():
     """Remove all the match records from the database."""
     
@@ -159,6 +148,4 @@ def swissPairings():
         lst.append((first[0],first[1],sec[0],sec[1]))
     delete_matches()
     return lst
-        
-                    
-
+    
