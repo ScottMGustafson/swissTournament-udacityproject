@@ -4,7 +4,6 @@
 #
 
 import psycopg2
-import subprocess
 
 def executeSql(fname):
     """execute tournament.sql"""
