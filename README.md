@@ -52,6 +52,10 @@ the tournament database through psychopg2.
     `(id1, name1, id2, name2)`,
 where `id*` is and int and `name*` is a string. After pairings, all matches are deleted from the matches table
   
+Testing:
+--------
+To test, run the supplied `tournament_test.py`
+    > python tourament_test.py
 
 
 
