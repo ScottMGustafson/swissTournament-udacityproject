@@ -5,34 +5,15 @@
 
 import psycopg2
 
-def executeSql(fname):
-    """execute tournament.sql"""
-    with open(fname, 'r') as f:
-        sql_file = f.read()
-
-    sql_cmd = [it+';' for it in sql_file.split(';')]
-
-    db = psycopg2.connect("dbname=postgres")
-    c=db.cursor()
-    for cmd in sql_cmd[0:-2]:
-        try:
-            c.execute(cmd)
-        except psycopg2.ProgrammingError:
-            print(cmd)
-            raise
-    db.commit()
-    db.close()
-
 def connect():
     """Connect to the PostgreSQL database.  Returns a database connection."""
-
     try:
-        db= psycopg2.connect("dbname=tournament")
+        db=psycopg2.connect("dbname=tournament")
     except:
-        executeSql("tournament.sql")
-        db= psycopg2.connect("dbname=tournament")
+        print("did you create the tournament database yet?")
+        raise
     return db 
-        
+
 def deleteMatches():
     """Remove all the match records from the database."""
     
@@ -141,10 +122,11 @@ def swissPairings():
     standings=playerStandings()
     standings=sorted(standings, key=lambda x: x[2])
     lst=[]
-    while len(standings)>1:
-        first=standings.pop(0)
-        sec=standings.pop(0)
-        lst.append((first[0],first[1],sec[0],sec[1]))
+    for i in range(0,len(standings), 2):
+        lst.append((standings[i][0],standings[i][1],
+                    standings[i+1][0],standings[i+1][1]))
     delete_matches()
     return lst
-    
+        
+                    
+

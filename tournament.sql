@@ -1,3 +1,7 @@
+drop database if exists tournament;
+create database tournament;
+
+\c tournament
 --drop tables and views if exists
 drop view if exists standings_view;
 drop table if exists matches, players;
